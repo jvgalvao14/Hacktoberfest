@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Note taking</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div>
+            <a
+                class="btn btn-primary btn-lg justify-content-center"
+                data-bs-toggle="offcanvas"
+                href="#offcanvasExample"
+                role="button"
+                aria-controls="offcanvasExample"
+                style="margin: 15px; box-sizing: border-box"
+            >
+                Create a Note
+            </a>
+        </div>
+
+        <main class="note-container">
+            <div class="container" style="max-width: 500px" id="0">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Test</h4>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-text">Note example</h3>
+                        <button
+                            type="button"
+                            class="btn btn-info"
+                            onclick="deleteNote(`0`)"
+                        >
+                            Delete note
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div
+            class="offcanvas offcanvas-start"
+            tabindex="-1"
+            id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel"
+        >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+                    Create a note!
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                ></button>
+            </div>
+
+            <div class="offcanvas-body">
+                <form>
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-center flex-column">
+                            <div class="form-group p-2">
+                                <input
+                                    class="form-control"
+                                    id="title"
+                                    name="title"
+                                    type="text"
+                                    placeholder="Title"
+                                    required
+                                /><br />
+                            </div>
+                            <div class="form-group p-2">
+                                <textarea
+                                    name="body"
+                                    id="body"
+                                    cols="30"
+                                    rows="10"
+                                    required
+                                ></textarea>
+                            </div>
+                            <button
+                                class="w-100 btn btn-lg btn-primary"
+                                type="button"
+                                onclick="createNote()"
+                            >
+                                Create the Note
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            let id = 0;
+            let noteArr = [];
+            let createNote = () => {
+                let title = document.querySelector("#title").value;
+                let body = document.querySelector("#body").value;
+                id++;
+                noteArr.push({
+                    id,
+                    title,
+                    body,
+                });
+                document.querySelector(".note-container").innerHTML += `
+                                    <div class="container" style="max-width: 500px" id="${id}">
+                                        <div class="card mb-4 rounded-3 shadow-sm">
+                                            <div class="card-header py-3">
+                                                <h4 class="my-0 fw-normal">${title}</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <h3 class="card-text">${body}</h3>
+                                                <button type="button" class="btn btn-info" onclick="deleteNote(${id})">
+                                                    Delete note
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+            };
+            let deleteNote = (id) => {
+                let noteContainer = document.querySelector(".note-container");
+                let note = document.getElementById(`${id}`);
+                noteContainer.removeChild(note);
+            };
+            let count = () => {
+                let numA = 8;
+                let numB = numA / 2;
+                for (let i = 0; i < 9; i++) {
+                    console.log(numA);
+                    console.log(numB);
+                    numA = numA + numB;
+                    numB += 2;
+                }
+            };
+
+            let combinations = (a, b, c) => {
+                let array1 = [];
+                let array2 = [];
+                let array3 = [];
+                for (let i = 1; i <= a; i++) {
+                    array1.push(String(i));
+                }
+                for (let i = 1; i <= b; i++) {
+                    array2.push(String(i));
+                }
+                for (let i = 1; i <= c; i++) {
+                    array3.push(String(i));
+                }
+                const combine = ([head, ...[headTail, ...tailTail]]) => {
+                    if (!headTail) return head;
+                    const combined = headTail.reduce((acc, x) => {
+                        return acc.concat(head.map((h) => `${h}${x}`));
+                    }, []);
+                    return combine([combined, ...tailTail]);
+                };
+                console.log(combine([array1, array2, array3]));
+            };
+
+            combinations(10, 12, 7);
+        </script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
